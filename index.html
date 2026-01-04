@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เกมจับคู่การ์ดคณิตศาสตร์</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Boat Animation -->
+    <div class="boat-container">
+        <div class="boat">🚤</div>
+        <div class="wave wave1"></div>
+        <div class="wave wave2"></div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>🎮 เกมจับคู่การ์ด</h1>
+            <div class="header-info">
+                <p>👤 <span id="playerName">ผู้เล่น</span></p>
+            </div>
+            <div class="header-buttons">
+                <button id="profileBtn" class="profile-btn">👤 โปรไฟล์</button>
+                <button id="soundBtn" class="sound-btn">🔊 เสียง</button>
+                <button id="darkModeBtn" class="dark-mode-btn">🌙 มืด</button>
+            </div>
+        </div>
+        
+        <!-- Menu เลือกระดับ -->
+        <div id="levelMenu" class="level-menu">
+            <h2>เลือกโหมดการเล่น</h2>
+            <div class="game-mode-buttons">
+                <button class="mode-btn" data-mode="single">👤 เล่นคนเดียว</button>
+                <button class="mode-btn" data-mode="two-player">👥 สองคน</button>
+                <button class="mode-btn" data-mode="timed-challenge">⏱️ ท้าทายเวลา</button>
+                <button class="mode-btn" data-mode="daily">🎁 ท้าทายรายวัน</button>
+            </div>
+            <h3>เลือกระดับความยาก</h3>
+            <div class="level-buttons">
+                <button class="level-btn" data-level="easy">😊 ง่าย</button>
+                <button class="level-btn" data-level="medium">😐 ปานกลาง</button>
+                <button class="level-btn" data-level="hard">😤 ยาก</button>
+                <button class="level-btn" data-level="extreme">🔥 ระเบิด</button>
+            </div>
+            <div class="menu-bottom">
+                <button id="leaderboardBtn" class="leaderboard-btn">🏆 ลีดเดอร์บอร์ด</button>
+                <button id="achievementBtn" class="achievement-btn">🎖️ สัญลักษณ์</button>
+                <button id="statsBtn" class="stats-btn">📊 สถิติ</button>
+            </div>
+        </div>
+
+        <!-- Game Info -->
+        <div id="gameInfo" class="game-info" style="display: none;">
+            <div class="game-stats-top">
+                <div class="combo-display">
+                    <p>🔥 Combo: <span id="combo">0</span>x</p>
+                </div>
+                <div class="multiplier-display">
+                    <p>✖️ คูณ: <span id="multiplier">1.0</span>x</p>
+                </div>
+                <div class="bonus-time">
+                    <p>⏱️ โบนัสเวลา: <span id="bonusTime">0</span>s</p>
+                </div>
+            </div>
+
+            <div class="player-stats">
+                <div class="player player1">
+                    <p>🎮 ผู้เล่น 1</p>
+                    <p>คะแนน: <span id="score">0</span></p>
+                    <p>ครั้ง: <span id="moves">0</span></p>
+                </div>
+                <div id="player2Stats" class="player player2" style="display: none;">
+                    <p>🎮 ผู้เล่น 2</p>
+                    <p>คะแนน: <span id="score2">0</span></p>
+                    <p>ครั้ง: <span id="moves2">0</span></p>
+                </div>
+            </div>
+            
+            <div class="game-center">
+                <div class="progress-container">
+                    <p>ความคืบหน้า: <span id="progress">0</span>%</p>
+                    <div class="progress-bar">
+                        <div id="progressFill" class="progress-fill"></div>
+                    </div>
+                </div>
+                <p>⏱️ เวลา: <span id="timer">180</span>s</p>
+                <p>ระดับ: <span id="levelDisplay">ง่าย</span> | สูงสุด: <span id="maxScore">0</span></p>
+                <p id="currentPlayer" style="display: none;">📍 <span id="playerTurn">ผู้เล่น 1</span> เล่น</p>
+            </div>
+
+            <div class="buttons">
+                <button id="powerUpBtn" class="power-up-btn">⚡ Power-ups</button>
+                <button id="hintBtn" class="hint-btn">💡 Hints: <span id="hints">3</span></button>
+                <button id="resetBtn" class="reset-btn">เริ่มใหม่</button>
+            </div>
+        </div>
+        
+        <div id="gameBoard" class="game-board"></div>
+        
+        <div id="message" class="message"></div>
+
+        <!-- Combo notification -->
+        <div id="comboNotification" class="combo-notification" style="display: none;">
+            🔥 COMBO x<span id="comboCount">0</span>!
+        </div>
+
+        <!-- Stars Display -->
+        <div id="starsDisplay" class="stars-display" style="display: none;">
+            <div id="stars" class="stars"></div>
+        </div>
+
+        <!-- Confetti Container -->
+        <div id="confetti" class="confetti"></div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div id="profileModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>👤 โปรไฟล์ผู้เล่น</h2>
+            <div class="profile-form">
+                <input type="text" id="playerNameInput" placeholder="ชื่อผู้เล่น" maxlength="20">
+                <button id="saveName" class="save-btn">บันทึก</button>
+            </div>
+            <div id="profileInfo" class="profile-info"></div>
+            <button class="close-modal-btn">ปิด</button>
+        </div>
+    </div>
+
+    <!-- Power-ups Modal -->
+    <div id="powerUpModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>⚡ Power-ups</h2>
+            <div id="powerUpList" class="power-up-list"></div>
+            <button class="close-modal-btn">ปิด</button>
+        </div>
+    </div>
+
+    <!-- Leaderboard Modal -->
+    <div id="leaderboardModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>🏆 ลีดเดอร์บอร์ด</h2>
+            <div id="leaderboardList" class="leaderboard-list"></div>
+            <button class="close-modal-btn">ปิด</button>
+        </div>
+    </div>
+
+    <!-- Achievement Modal -->
+    <div id="achievementModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close close-achievement">&times;</span>
+            <h2>🎖️ สัญลักษณ์ที่ได้</h2>
+            <div id="achievementList" class="achievement-list"></div>
+            <button class="close-modal-btn close-achievement-btn">ปิด</button>
+        </div>
+    </div>
+
+    <!-- Statistics Modal -->
+    <div id="statsModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>📊 สถิติผู้เล่น</h2>
+            <div id="statsList" class="stats-list"></div>
+            <button class="close-modal-btn">ปิด</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
